@@ -118,13 +118,13 @@ async def notify(req: Request) -> Response:  # pylint: disable=unused-argument
 # Send a message to all conversation members.
 # This uses the shared Dictionary that the Bot adds conversation references to.
 async def _send_proactive_message():
-        for conversation_reference in CONVERSATION_REFERENCES.values():
-        message = Activity(text=("You got em!"))
-        await ADAPTER.continue_conversation(
-            conversation_reference,
-            lambda turn_context: turn_context.send_activity(message),
-            APP_ID,
-        )
+    for conversation_reference in CONVERSATION_REFERENCES.values():
+    message = Activity(text=("You got em!"))
+    await ADAPTER.continue_conversation(
+        conversation_reference,
+        lambda turn_context: turn_context.send_activity(message),
+        APP_ID,
+    )
 
 
 APP = web.Application(middlewares=[aiohttp_error_middleware])
