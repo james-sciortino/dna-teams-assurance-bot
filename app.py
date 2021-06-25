@@ -73,9 +73,28 @@ APP_ID = SETTINGS.app_id if SETTINGS.app_id else uuid.uuid4()
 BOT = ProactiveBot(CONVERSATION_REFERENCES)
 
 
+
+# Listen for incoming requests on /api/dna.
+async def messages(req: Request) -> Response:
+    # Main bot message handler.
+    if "application/json" in req.headers["Content-Type"]:
+        body = await req.json()
+    else:
+        return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
+
+    activity = Activity().deserialize(body)
+    auth_header = req.headers["Authorization"] if "Authorization" in req.headers else ""
+
+    response = await ADAPTER.process_activity(activity, auth_header, BOT.on_turn)
+    if response:
+        return json_response(data=response.body, status=response.status)
+    return Response(status=HTTPStatus.OK)
+
+
 # Listen for incoming requests on /api/messages.
 async def messages(req: Request) -> Response:
     # Main bot message handler.
+    await _send_proactive_message()
     if "application/json" in req.headers["Content-Type"]:
         body = await req.json()
     else:
@@ -115,7 +134,7 @@ if __name__ == "__main__":
     sslcontext = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
     sslcontext.load_cert_chain('C:/Test/server.crt', 'C:/Test/server.key')
     try:
-        web.run_app(APP, host="localhost", port=CONFIG.PORT, ssl_context=sslcontext)
+        web.run_app(APP, host="0.0.0.0", port=CONFIG.PORT, ssl_context=sslcontext)
     except Exception as error:
         raise error
 
