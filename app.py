@@ -1,6 +1,7 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+import ssl
 import sys
 import traceback
 import uuid
@@ -111,7 +112,10 @@ APP.router.add_post("/api/messages", messages)
 APP.router.add_get("/api/notify", notify)
 
 if __name__ == "__main__":
+    sslcontext = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+    sslcontext.load_cert_chain('C:/Test/server.crt', 'C:/Test/server.key')
     try:
-        web.run_app(APP, host="localhost", port=CONFIG.PORT)
+        web.run_app(APP, host="localhost", port=CONFIG.PORT, ssl_context=sslcontext)
     except Exception as error:
         raise error
+
