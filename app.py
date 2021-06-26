@@ -95,14 +95,16 @@ def _create_adaptive_card_attachment(event, index) -> Attachment:
     card_path = os.path.join(os.getcwd(), CARDS[index])
     with open(card_path, "rb") as in_file:
         card_data = json.load(in_file)
-        card_data["body"][1]["text"] = ("Severity: " + str(event["severity"]))
-        card_data["body"][2]["text"] = ("Time: " + str(event["timestamp"]))
-        card_data["body"][3]["text"] = ("Event ID: " + event["eventId"])
-        card_data["body"][4]["text"] = ("Details:")
-        card_data["body"][5]["text"] = ("Assurance Issue Details: " + event["details"]["Assurance Issue Details"])
-      # card_data["body"][6]["text"] = ("Assurance Issue Category: " + event[1]["Assurance Issue Category"])
-      # card_data["body"][7]["text"] = ("Assurance Issue Status: " + event[1]["Assurance Issue Status"])
-      # card_data["body"][8]["text"] = ("DNA Event Link: " + event[1]["ciscoDnaEventLink"])
+        card_data["body"][1]["text"] = ("Time: " + str(event["timestamp"]))
+        card_data["body"][2]["text"] = ("Event ID: " + event["eventId"])
+        card_data["body"][3]["text"] = ("Assurance Issue Details: " + event["details"]["Assurance Issue Details"])
+        card_data["body"][4]["text"] = ("Assurance Issue Priority: " + event["details"]["Assurance Issue Category"])
+        card_data["body"][5]["text"] = ("Device: " + event["details"]["Device"])
+        card_data["body"][6]["text"] = ("Assurance Issue Name: " + event["details"]["Assurance Issue Name"])
+        card_data["body"][7]["text"] = ("Assurance Issue Category: " + event["details"]["Assurance Issue Category"])
+        card_data["body"][8]["text"] = ("Assurance Issue Status: " + event["details"]["Assurance Issue Status"])
+        card_data["body"][9]["text"] = ("DNA Event Link: " + event["ciscoDnaEventLink"])
+    
     return CardFactory.adaptive_card(card_data)
 
 # Listen for incoming requests on /api/assurance.
