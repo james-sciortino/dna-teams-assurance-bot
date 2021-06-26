@@ -8,7 +8,7 @@ import uuid
 from datetime import datetime
 from http import HTTPStatus
 from typing import Dict
-
+import os
 from aiohttp import web
 from aiohttp.web import Request, Response, json_response
 from botbuilder.core import (
@@ -138,7 +138,7 @@ APP.router.add_post("/api/assurance", assurance)
 
 if __name__ == "__main__":
     sslcontext = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
-    sslcontext.load_cert_chain('C:/Test/server.crt', 'C:/Test/server.key')
+    sslcontext.load_cert_chain(os.getcwd() + "/server.crt", os.getcwd() + "/server.key")
     try:
         web.run_app(APP, host="0.0.0.0", port=CONFIG.PORT, ssl_context=sslcontext)
     except Exception as error:
