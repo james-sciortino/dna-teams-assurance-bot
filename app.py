@@ -111,6 +111,7 @@ def _create_adaptive_card_attachment(event, index) -> Attachment:
 async def assurance(req: Request) -> Response:
     if "application/json" in req.headers["Content-Type"]:
         body = await req.json()
+        print(body)
     else:
         return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
 
