@@ -108,6 +108,7 @@ def _create_adaptive_card_attachment(event, index) -> Attachment:
 async def assurance(req: Request) -> Response:
     if "application/json" in req.headers["Content-Type"]:
         body = await req.json()
+        print(body)
     else:
         return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
 
@@ -123,7 +124,7 @@ async def assurance(req: Request) -> Response:
     return Response(status=HTTPStatus.OK)
 
 # Listen for requests on /api/notify, and send a messages to all conversation members.
-async def notify(req: Request) -> Response:  # pylint: disable=unused-argument
+async def notify(req: Request) -> Response:  # pylint: disable=unused-argumentTSH
     await _send_proactive_message()
     return Response(status=HTTPStatus.OK, text="Proactive messages have been sent")
 
