@@ -1,6 +1,6 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
-
+import json
 import ssl
 import sys
 import traceback
@@ -15,9 +15,12 @@ from botbuilder.core import (
     BotFrameworkAdapterSettings,
     TurnContext,
     BotFrameworkAdapter,
+    CardFactory, 
+    MessageFactory,
+    conversation_reference_extension
 )
 from botbuilder.core.integration import aiohttp_error_middleware
-from botbuilder.schema import Activity, ActivityTypes, ConversationReference
+from botbuilder.schema import Activity, ActivityTypes, ConversationReference, Attachment
 
 from bots import ProactiveBot
 from config import DefaultConfig
@@ -35,7 +38,7 @@ async def on_error(context: TurnContext, error: Exception):
     # This check writes out errors to console log .vs. app insights.
     # NOTE: In production environment, you should consider logging this to Azure
     #       application insights.
-    print(f"\n [on_turn_error] unhandled error: {error}", file=sys.stderr)
+    print(f"/n [on_turn_error] unhandled error: {error}", file=sys.stderr)
     traceback.print_exc()
 
     # Send a message to the user
@@ -57,7 +60,6 @@ async def on_error(context: TurnContext, error: Exception):
         # Send a trace activity, which will be displayed in Bot Framework Emulator
         await context.send_activity(trace_activity)
 
-
 ADAPTER.on_turn_error = on_error
 
 # Create a shared dictionary.  The Bot will add conversation references when users
@@ -72,35 +74,15 @@ APP_ID = SETTINGS.app_id if SETTINGS.app_id else uuid.uuid4()
 # Create the Bot
 BOT = ProactiveBot(CONVERSATION_REFERENCES)
 
-
-
-# Listen for incoming requests on /api/dna.
-async def messages(req: Request) -> Response:
-    # Main bot message handler.
-    if "application/json" in req.headers["Content-Type"]:
-        body = await req.json()
-    else:
-        return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
-
-    activity = Activity().deserialize(body)
-    auth_header = req.headers["Authorization"] if "Authorization" in req.headers else ""
-
-    response = await ADAPTER.process_activity(activity, auth_header, BOT.on_turn)
-    if response:
-        return json_response(data=response.body, status=response.status)
-    return Response(status=HTTPStatus.OK)
-
-
 # Listen for incoming requests on /api/messages.
 async def messages(req: Request) -> Response:
     # Main bot message handler.
-    await _send_proactive_message()
     if "application/json" in req.headers["Content-Type"]:
         body = await req.json()
     else:
-        return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
-
+        return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE) 
     activity = Activity().deserialize(body)
+
     auth_header = req.headers["Authorization"] if "Authorization" in req.headers else ""
 
     response = await ADAPTER.process_activity(activity, auth_header, BOT.on_turn)
@@ -108,28 +90,51 @@ async def messages(req: Request) -> Response:
         return json_response(data=response.body, status=response.status)
     return Response(status=HTTPStatus.OK)
 
+def _create_adaptive_card_attachment(data) -> Attachment:
+    #card_path = os.path.join(os.getcwd(), CARDS[index])
+    #with open(card_path, "rb") as in_file:
+        #card_data = json.load(in_file)
+    #    card_data["body"][1]["text"] = card
+    return CardFactory.adaptive_card(data)
+
+# Listen for incoming requests on /api/assurance.
+async def assurance(req: Request) -> Response:
+    if "application/json" in req.headers["Content-Type"]:
+        body = await req.json()
+    else:
+        return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
+    activity = Activity().deserialize(body)
+    auth_header = req.headers["Authorization"] if "Authorization" in req.headers else ""
+    response = await ADAPTER.process_activity(activity, auth_header, BOT.on_turn)
+    #if response:
+    #  return json_response(data=response.body, status=response.status)
+    await _send_proactive_message(body)
+    return Response(status=HTTPStatus.OK, text="Proactive messages have been sent")
 
 # Listen for requests on /api/notify, and send a messages to all conversation members.
 async def notify(req: Request) -> Response:  # pylint: disable=unused-argument
     await _send_proactive_message()
     return Response(status=HTTPStatus.OK, text="Proactive messages have been sent")
 
-
 # Send a message to all conversation members.
 # This uses the shared Dictionary that the Bot adds conversation references to.
-async def _send_proactive_message():
+async def _send_proactive_message(body):
+    message = Activity(
+        text="Smegma",
+        type=ActivityTypes.message,
+        attachments=[_create_adaptive_card_attachment(body)])
+    print(body)
     for conversation_reference in CONVERSATION_REFERENCES.values():
-        message = Activity(text=("You got em!"))
         await ADAPTER.continue_conversation(
             conversation_reference,
             lambda turn_context: turn_context.send_activity(message),
             APP_ID,
-        )
-
+            )
 
 APP = web.Application(middlewares=[aiohttp_error_middleware])
 APP.router.add_post("/api/messages", messages)
 APP.router.add_get("/api/notify", notify)
+APP.router.add_post("/api/assurance", assurance)
 
 if __name__ == "__main__":
     sslcontext = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
