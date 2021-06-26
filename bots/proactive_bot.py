@@ -2,10 +2,16 @@
 # Licensed under the MIT License.
 
 from typing import Dict
+import os
+from botbuilder.core import ActivityHandler, TurnContext, CardFactory
+from botbuilder.schema import (
+    ChannelAccount, 
+    ConversationReference, 
+    Activity, 
+    Attachment
+)
 
-from botbuilder.core import ActivityHandler, TurnContext
-from botbuilder.schema import ChannelAccount, ConversationReference, Activity
-
+CARDS = ["C:/Users/james.sciortino/OneDrive/James/Desktop/DNA-Assurance-Bot-Teams/bots/resources/0-welcome_bot.json"]
 
 class ProactiveBot(ActivityHandler):
     def __init__(self, conversation_references: Dict[str, ConversationReference]):
@@ -43,3 +49,4 @@ class ProactiveBot(ActivityHandler):
         self.conversation_references[
             conversation_reference.user.id
         ] = conversation_reference
+
