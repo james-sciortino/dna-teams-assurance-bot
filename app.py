@@ -110,10 +110,18 @@ def _create_adaptive_card_attachment(event, index) -> Attachment:
 # Listen for incoming requests on /api/assurance.
 async def assurance(req: Request) -> Response:
     if "application/json" in req.headers["Content-Type"]:
-        body = await req.json()
+        body = await req.text()
+        body.replace("None", "Empty")
+        body = json.loads(body)
         print(body)
     else:
         return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
+
+  #  if "application/json" in req.headers["Content-Type"]:
+  #      body = await req.json()
+  #      print(body)
+  #  else:
+  #      return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
 
     #activity = Activity().deserialize(body)
     #auth_header = req.headers["Authorization"] if "Authorization" in req.headers else ""
@@ -144,7 +152,8 @@ async def _send_proactive_message(event):
             APP_ID,
             )
 
-APP = web.Application(middlewares=[aiohttp_error_middleware])
+#APP = web.Application(middlewares=[aiohttp_error_middleware])
+APP = web.Application(middlewares=None)
 APP.router.add_post("/api/messages", messages)
 APP.router.add_get("/api/notify", notify)
 APP.router.add_post("/api/assurance", assurance)
