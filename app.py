@@ -110,16 +110,17 @@ def _create_adaptive_card_attachment(event, index) -> Attachment:
 # Listen for incoming requests on /api/assurance.
 async def assurance(req: Request) -> Response:
     if "application/json" in req.headers["Content-Type"]:
-        body = await req.text()
-        body.replace("None", "Empty")
-        body = json.loads(body)
-        print(body)
+        test = await req.text()
+        r = test.replace("None",'"Empty"')
+        body = json.loads(r)
+        
     else:
         return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
 
   #  if "application/json" in req.headers["Content-Type"]:
   #      body = await req.json()
   #      print(body)
+  #      print(type(body))
   #  else:
   #      return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
 
