@@ -95,28 +95,25 @@ def _create_adaptive_card_attachment(event, index) -> Attachment:
     card_path = os.path.join(os.getcwd(), CARDS[index])
     with open(card_path, "rb") as in_file:
         card_data = json.load(in_file)
-        card_data["body"][1]["text"] = ("Type: " + event[0]["timestamp"])
-        card_data["body"][2]["text"] = ("Assurance Issue Details: " + event[1]["Assurance Issue Details"])
-        card_data["body"][3]["text"] = ("Assurance Issue Priority: " + event[1]["Assurance Issue Priority"])
-        card_data["body"][4]["text"] = ("Device: " + event[1]["Device"])
-        card_data["body"][5]["text"] = ("Assurance Issue Name: " + event[1]["Assurance Issue Name"])
-        card_data["body"][6]["text"] = ("Assurance Issue Category: " + event[1]["Assurance Issue Category"])
-        card_data["body"][7]["text"] = ("Assurance Issue Status: " + event[1]["Assurance Issue Status"])
-        card_data["body"][8]["text"] = ("DNA Event Link: " + event[1]["ciscoDnaEventLink"])
+        card_data["body"][1]["text"] = ("Severity: " + str(event["severity"]))
+        card_data["body"][2]["text"] = ("Time: " + str(event["timestamp"]))
+        card_data["body"][3]["text"] = ("Event ID: " + event["eventId"])
+        card_data["body"][4]["text"] = ("Details:")
+        card_data["body"][5]["text"] = ("Assurance Issue Details: " + event["details"]["Assurance Issue Details"])
+      # card_data["body"][6]["text"] = ("Assurance Issue Category: " + event[1]["Assurance Issue Category"])
+      # card_data["body"][7]["text"] = ("Assurance Issue Status: " + event[1]["Assurance Issue Status"])
+      # card_data["body"][8]["text"] = ("DNA Event Link: " + event[1]["ciscoDnaEventLink"])
     return CardFactory.adaptive_card(card_data)
 
 # Listen for incoming requests on /api/assurance.
 async def assurance(req: Request) -> Response:
     if "application/json" in req.headers["Content-Type"]:
         body = await req.json()
-        print(body)
     else:
         return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
 
-    activity = Activity().deserialize(body)
-
-    auth_header = req.headers["Authorization"] if "Authorization" in req.headers else ""
-
+    #activity = Activity().deserialize(body)
+    #auth_header = req.headers["Authorization"] if "Authorization" in req.headers else ""
     #response = await ADAPTER.process_activity(activity, auth_header, BOT.on_turn)
     #if response:
         #return json_response(data=response.body, status=response.status)
