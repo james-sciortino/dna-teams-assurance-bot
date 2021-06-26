@@ -11,8 +11,6 @@ from botbuilder.schema import (
     Attachment
 )
 
-CARDS = ["C:/Users/james.sciortino/OneDrive/James/Desktop/DNA-Assurance-Bot-Teams/bots/resources/0-welcome_bot.json"]
-
 class ProactiveBot(ActivityHandler):
     def __init__(self, conversation_references: Dict[str, ConversationReference]):
         self.conversation_references = conversation_references

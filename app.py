@@ -59,6 +59,7 @@ async def on_error(context: TurnContext, error: Exception):
         )
         # Send a trace activity, which will be displayed in Bot Framework Emulator
         await context.send_activity(trace_activity)
+CARDS = ["C:/Users/james.sciortino/OneDrive/James/Desktop/DNA-Assurance-Bot-Teams/bots/resources/0-template.json"]
 
 ADAPTER.on_turn_error = on_error
 
@@ -90,12 +91,23 @@ async def messages(req: Request) -> Response:
         return json_response(data=response.body, status=response.status)
     return Response(status=HTTPStatus.OK)
 
-def _create_adaptive_card_attachment(data) -> Attachment:
-    #card_path = os.path.join(os.getcwd(), CARDS[index])
-    #with open(card_path, "rb") as in_file:
-        #card_data = json.load(in_file)
-    #    card_data["body"][1]["text"] = card
-    return CardFactory.adaptive_card(data)
+def _create_adaptive_card_attachment(event, index) -> Attachment:
+    detail = event["issueDetails"]["issue"]
+    card_path = os.path.join(os.getcwd(), CARDS[index])
+    with open(card_path, "rb") as in_file:
+        card_data = json.load(in_file)
+        card_data["body"][1]["text"] = ("Issue: " + detail[0]["issueId"])
+        card_data["body"][2]["text"] = ("Source: " + detail[0]["issueSource"])
+        card_data["body"][3]["text"] = ("Category: " + detail[0]["issueCategory"])
+        card_data["body"][4]["text"] = ("Name: " + detail[0]["issueName"])
+        card_data["body"][5]["text"] = ("Description: " + detail[0]["issueDescription"])
+        card_data["body"][6]["text"] = ("Entity: " + detail[0]["issueEntity"])
+        card_data["body"][7]["text"] = ("Entity Value: " + detail[0]["issueEntityValue"])
+        card_data["body"][8]["text"] = ("Severity: " + detail[0]["issueSeverity"])  
+        card_data["body"][9]["text"] = ("Priority: " + detail[0]["issuePriority"])
+        card_data["body"][10]["text"] = ("Summary: " + detail[0]["issueSummary"])
+        card_data["body"][11]["text"] = ("Timestamp: " + detail[0]["issueTimestamp"])
+    return CardFactory.adaptive_card(card_data)
 
 # Listen for incoming requests on /api/assurance.
 async def assurance(req: Request) -> Response:
@@ -103,13 +115,17 @@ async def assurance(req: Request) -> Response:
         body = await req.json()
     else:
         return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
+
     activity = Activity().deserialize(body)
+
     auth_header = req.headers["Authorization"] if "Authorization" in req.headers else ""
-    response = await ADAPTER.process_activity(activity, auth_header, BOT.on_turn)
+
+    #response = await ADAPTER.process_activity(activity, auth_header, BOT.on_turn)
     #if response:
-    #  return json_response(data=response.body, status=response.status)
+        #return json_response(data=response.body, status=response.status)
+
     await _send_proactive_message(body)
-    return Response(status=HTTPStatus.OK, text="Proactive messages have been sent")
+    return Response(status=HTTPStatus.OK)
 
 # Listen for requests on /api/notify, and send a messages to all conversation members.
 async def notify(req: Request) -> Response:  # pylint: disable=unused-argument
@@ -118,12 +134,12 @@ async def notify(req: Request) -> Response:  # pylint: disable=unused-argument
 
 # Send a message to all conversation members.
 # This uses the shared Dictionary that the Bot adds conversation references to.
-async def _send_proactive_message(body):
+async def _send_proactive_message(event):
     message = Activity(
-        text="Smegma",
+        text="Assurance Alert!",
         type=ActivityTypes.message,
-        attachments=[_create_adaptive_card_attachment(body)])
-    print(body)
+        attachments=[_create_adaptive_card_attachment(event, 0)])
+
     for conversation_reference in CONVERSATION_REFERENCES.values():
         await ADAPTER.continue_conversation(
             conversation_reference,
