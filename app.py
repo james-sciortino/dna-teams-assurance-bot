@@ -92,21 +92,16 @@ async def messages(req: Request) -> Response:
     return Response(status=HTTPStatus.OK)
 
 def _create_adaptive_card_attachment(event, index) -> Attachment:
-    detail = event["issueDetails"]["issue"]
     card_path = os.path.join(os.getcwd(), CARDS[index])
     with open(card_path, "rb") as in_file:
         card_data = json.load(in_file)
-        card_data["body"][1]["text"] = ("Issue: " + detail[0]["issueId"])
-        card_data["body"][2]["text"] = ("Source: " + detail[0]["issueSource"])
-        card_data["body"][3]["text"] = ("Category: " + detail[0]["issueCategory"])
-        card_data["body"][4]["text"] = ("Name: " + detail[0]["issueName"])
-        card_data["body"][5]["text"] = ("Description: " + detail[0]["issueDescription"])
-        card_data["body"][6]["text"] = ("Entity: " + detail[0]["issueEntity"])
-        card_data["body"][7]["text"] = ("Entity Value: " + detail[0]["issueEntityValue"])
-        card_data["body"][8]["text"] = ("Severity: " + detail[0]["issueSeverity"])  
-        card_data["body"][9]["text"] = ("Priority: " + detail[0]["issuePriority"])
-        card_data["body"][10]["text"] = ("Summary: " + detail[0]["issueSummary"])
-        card_data["body"][11]["text"] = ("Timestamp: " + detail[0]["issueTimestamp"])
+        card_data["body"][1]["text"] = ("Type: " + event["Type"])
+        card_data["body"][2]["text"] = ("Assurance Issue Details: " + event["Assurance Issue Details"])
+        card_data["body"][3]["text"] = ("Assurance Issue Priority: " + event["Assurance Issue Priority"])
+        card_data["body"][4]["text"] = ("Device: " + event["Device"])
+        card_data["body"][5]["text"] = ("Assurance Issue Name: " + event["Assurance Issue Name"])
+        card_data["body"][6]["text"] = ("Assurance Issue Category: " + event["Assurance Issue Category"])
+        card_data["body"][7]["text"] = ("Assurance Issue Status: " + event["Assurance Issue Status"])
     return CardFactory.adaptive_card(card_data)
 
 # Listen for incoming requests on /api/assurance.
