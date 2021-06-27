@@ -1,5 +1,6 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
+from datetime import datetime
 import json
 import ssl
 import sys
@@ -59,7 +60,7 @@ async def on_error(context: TurnContext, error: Exception):
         )
         # Send a trace activity, which will be displayed in Bot Framework Emulator
         await context.send_activity(trace_activity)
-CARDS = [os.getcwd() + "/0-template.json"]
+CARDS = [os.getcwd() + "/1-template.json"]
 
 ADAPTER.on_turn_error = on_error
 
@@ -95,15 +96,31 @@ def _create_adaptive_card_attachment(event, index) -> Attachment:
     card_path = os.path.join(os.getcwd(), CARDS[index])
     with open(card_path, "rb") as in_file:
         card_data = json.load(in_file)
-        card_data["body"][1]["text"] = ("Time: " + str(event["timestamp"]))
-        card_data["body"][2]["text"] = ("Event ID: " + event["eventId"])
+        realtime = datetime.fromtimestamp(event["timestamp"]/1000)
+        event_time = realtime.strftime("%x-%X") # Set  data and time format 
+        
+        for condition in event:
+            print(condition["details"]["Assurance Issue Status"])
+            if condition["details"]["Assurance Issue Status"] == "active":
+                if condition["details"]["Assurance Issue Category"] == "availability":
+                    if condition["severity"] == (1 or 2):
+                        color = "red"
+
+            elif condition["details"]["Assurance Issue Status"] == "active":
+                if condition["details"]["Assurance Issue Category"] == "availability":
+                    if condition["severity"] == (1 or 2):
+                        color = "red"
+
+            else:
+                color = "red"
+        card_data["body"][1]["columns"][1]["items"][1]["text"] = ("Time: " + str(event_time))
         card_data["body"][3]["text"] = ("Assurance Issue Details: " + event["details"]["Assurance Issue Details"])
         card_data["body"][4]["text"] = ("Assurance Issue Priority: " + event["details"]["Assurance Issue Category"])
         card_data["body"][5]["text"] = ("Device: " + event["details"]["Device"])
         card_data["body"][6]["text"] = ("Assurance Issue Name: " + event["details"]["Assurance Issue Name"])
         card_data["body"][7]["text"] = ("Assurance Issue Category: " + event["details"]["Assurance Issue Category"])
         card_data["body"][8]["text"] = ("Assurance Issue Status: " + event["details"]["Assurance Issue Status"])
-        card_data["body"][9]["text"] = ("DNA Event Link: " + event["ciscoDnaEventLink"])
+        card_data["actions"][0]["url"] = event["ciscoDnaEventLink"]
     
     return CardFactory.adaptive_card(card_data)
 
@@ -113,6 +130,7 @@ async def assurance(req: Request) -> Response:
         test = await req.text()
         r = test.replace("None",'"Empty"')
         body = json.loads(r)
+        print(body)
         
     else:
         return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
