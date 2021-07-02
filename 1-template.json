@@ -3,9 +3,10 @@
     "body": [
         {
             "type": "TextBlock",
-            "size": "Medium",
+            "size": "Large",
             "weight": "Bolder",
-            "text": "DNA Center Assurance Alert"
+            "text": "Placeholder",
+            "color": "Dark"
         },
         {
             "type": "ColumnSet",
@@ -15,9 +16,9 @@
                     "items": [
                         {
                             "type": "Image",
-                            "style": "Person",
-                            "url": "https://sciortino.blob.core.windows.net/automation-stuff/203-2030491_dna-icon-cisco-dna-center-logo.png",
-                            "size": "Small"
+                            "style": "Default",
+                            "size": "Medium",
+                            "url": "https://sciortino.blob.core.windows.net/automation-stuff/good.png"
                         }
                     ],
                     "width": "auto"
@@ -29,61 +30,43 @@
                             "type": "TextBlock",
                             "weight": "Bolder",
                             "text": "DNA Center",
-                            "wrap": true
+                            "wrap": true,
+                            "size": "Medium",
+                            "color": "good"
                         },
                         {
                             "type": "TextBlock",
                             "spacing": "None",
-                            "text": "Created {{DATE(2017-02-14T06:08:39Z,SHORT)}}",
+                            "text": "Placeholder",
                             "isSubtle": true,
-                            "wrap": true
-                        }
+                            "wrap": true,
+                            "size": "Medium"                        }
                     ],
                     "width": "stretch"
                 }
             ]
         },
+        {      
+        "type": "FactSet",
+                "facts": [
         {
-            "type": "TextBlock",
-            "text": "Please respond to this issue",
-            "wrap": true
+            "title": "Details",
+            "value": "Dbaldl"
         },
         {
-            "type": "TextBlock",
-            "text": "New TextBlock",
-            "wrap": true,
-            "color": "Dark"
+            "title": "Device",
+            "value": "Bleh"
         },
         {
-            "type": "TextBlock",
-            "text": "New TextBlock",
-            "wrap": true,
-            "color": "Dark"
+            "title": "Category",
+            "value": "Bleh"
         },
         {
-            "type": "TextBlock",
-            "text": "New TextBlock",
-            "wrap": true,
-            "color": "Dark"
-        },
-        {
-            "type": "TextBlock",
-            "text": "New TextBlock",
-            "wrap": true,
-            "color": "Dark"
-        },
-        {
-            "type": "TextBlock",
-            "text": "New TextBlock",
-            "wrap": true,
-            "color": "Dark"
-        },
-        {
-            "type": "TextBlock",
-            "text": "New TextBlock",
-            "wrap": true,
-            "color": "Dark"
+            "title": "Status",
+            "value": "Bleh"
         }
+        ]
+    }
     ],
     "actions": [
         {
@@ -95,6 +78,9 @@
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "version": "1.3",
     "backgroundImage": {
-        "url": "https://sciortino.blob.core.windows.net/automation-stuff/cisco-logo-transparent - Copy.pngg"
+        "url": "https://sciortino.blob.core.windows.net/automation-stuff/dna-transparent.png",
+        "horizontalAlignment": "Center",
+        "verticalAlignment": "Center"
+        
     }
 }

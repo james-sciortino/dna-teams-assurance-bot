@@ -96,32 +96,29 @@ def _create_adaptive_card_attachment(event, index) -> Attachment:
     card_path = os.path.join(os.getcwd(), CARDS[index])
     with open(card_path, "rb") as in_file:
         card_data = json.load(in_file)
-        realtime = datetime.fromtimestamp(event["timestamp"]/1000)
+        realtime = datetime.fromtimestamp(int(event["timestamp"])/1000)
         event_time = realtime.strftime("%x-%X") # Set  data and time format 
-        
-        for condition in event:
-            print(condition["details"]["Assurance Issue Status"])
-            if condition["details"]["Assurance Issue Status"] == "active":
-                if condition["details"]["Assurance Issue Category"] == "availability":
-                    if condition["severity"] == (1 or 2):
-                        color = "red"
 
-            elif condition["details"]["Assurance Issue Status"] == "active":
-                if condition["details"]["Assurance Issue Category"] == "availability":
-                    if condition["severity"] == (1 or 2):
-                        color = "red"
+    if event["details"]["Assurance Issue Status"] == "active":
+        if event["details"]["Assurance Issue Priority"] == "P1":
+            card_data["body"][1]["columns"][1]["items"][0]["color"] = "attention"
+            card_data["body"][1]["columns"][0]["items"][0]["url"] = "https://sciortino.blob.core.windows.net/automation-stuff/warn.png"
+        elif event["details"]["Assurance Issue Priority"] == "P2":
+                card_data["body"][1]["columns"][1]["items"][0]["color"] = "warning"
+                card_data["body"][1]["columns"][0]["items"][0]["url"] = "https://sciortino.blob.core.windows.net/automation-stuff/caution.png"
+        else:
+            card_data["body"][1]["columns"][1]["items"][0]["color"] = "good"
+            card_data["body"][1]["columns"][0]["items"][0]["url"] = "https://sciortino.blob.core.windows.net/automation-stuff/good.png"
 
-            else:
-                color = "red"
-        card_data["body"][1]["columns"][1]["items"][1]["text"] = ("Time: " + str(event_time))
-        card_data["body"][3]["text"] = ("Assurance Issue Details: " + event["details"]["Assurance Issue Details"])
-        card_data["body"][4]["text"] = ("Assurance Issue Priority: " + event["details"]["Assurance Issue Category"])
-        card_data["body"][5]["text"] = ("Device: " + event["details"]["Device"])
-        card_data["body"][6]["text"] = ("Assurance Issue Name: " + event["details"]["Assurance Issue Name"])
-        card_data["body"][7]["text"] = ("Assurance Issue Category: " + event["details"]["Assurance Issue Category"])
-        card_data["body"][8]["text"] = ("Assurance Issue Status: " + event["details"]["Assurance Issue Status"])
-        card_data["actions"][0]["url"] = event["ciscoDnaEventLink"]
-    
+    card_data["body"][0]["text"] = event["details"]["Assurance Issue Name"]
+    card_data["body"][1]["columns"][1]["items"][0]["text"] = (event["details"]["Assurance Issue Priority"] + " Event")
+    card_data["body"][1]["columns"][1]["items"][1]["text"] = str(event_time)
+    card_data["body"][2]["facts"][0]["value"] = event["details"]["Assurance Issue Details"]
+    card_data["body"][2]["facts"][1]["value"] = event["details"]["Device"]
+    card_data["body"][2]["facts"][2]["value"] = event["details"]["Assurance Issue Category"]
+    card_data["body"][2]["facts"][3]["value"] = event["details"]["Assurance Issue Status"]
+    card_data["actions"][0]["url"] = event["ciscoDnaEventLink"]
+
     return CardFactory.adaptive_card(card_data)
 
 # Listen for incoming requests on /api/assurance.
@@ -134,19 +131,6 @@ async def assurance(req: Request) -> Response:
         
     else:
         return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
-
-  #  if "application/json" in req.headers["Content-Type"]:
-  #      body = await req.json()
-  #      print(body)
-  #      print(type(body))
-  #  else:
-  #      return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
-
-    #activity = Activity().deserialize(body)
-    #auth_header = req.headers["Authorization"] if "Authorization" in req.headers else ""
-    #response = await ADAPTER.process_activity(activity, auth_header, BOT.on_turn)
-    #if response:
-        #return json_response(data=response.body, status=response.status)
 
     await _send_proactive_message(body)
     return Response(status=HTTPStatus.OK)
@@ -184,4 +168,3 @@ if __name__ == "__main__":
         web.run_app(APP, host="0.0.0.0", port=CONFIG.PORT, ssl_context=sslcontext)
     except Exception as error:
         raise error
-
