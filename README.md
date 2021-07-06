@@ -71,16 +71,19 @@ python app.py
 ```console
 https://localhost:3978/api/messages
 ```
+
 ![Botframework Setup](images/BotFramework.gif "Botframework Setup")
 
 4. Open Postman. Send a POST request with the following information:
  - HTTP Request: POST
  - HTTP URI: https://localhost:3978/api/assurance
  - Content-Type: application/json
- - Body: Select **raw** type and copy-paste the .json data from the example.json file included in this repository.
+ - Body: Select **raw** type and copy-paste the .json data from the [example.json](resources/example.json) file included in this repository.
+
 ![Postman Setup](images/Postman.gif "Postman Setup")
 
 5. View the P1 Assurance alert in the Microsoft BotFramework Emulator:
+
 ![Assurance P1](images/Assurance-P1.gif "Assurance P1")
 
 
