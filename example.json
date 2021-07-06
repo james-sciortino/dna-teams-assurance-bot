@@ -1,0 +1,33 @@
+{
+    "version": None, 
+    "instanceId": "670d9e42-b166-4359-8f1a-89dd1b1b9389", 
+    "eventId": "NETWORK-DEVICES-2-106", 
+    "namespace": "ASSURANCE",
+    "name": "Empty", 
+    "description": "Empty", 
+    "type": "NETWORK", 
+    "category": "ERROR", 
+    "domain": "Know Your Network", 
+    "subDomain": "Devices", 
+    "severity": 2, 
+    "source": "ndp", 
+    "timestamp": 1624685574528, 
+    "tags": None, 
+    
+    "details": 
+    {
+        "Type": "Network Device", 
+        "Assurance Issue Details":"AP AP-Test-3 went down", 
+        "Assurance Issue Priority": "P2", 
+        "Device": "AP-Test-3", 
+        "Assurance Issue Name": "AP AP-Test-3 went down", 
+        "Assurance Issue Category": "availability", 
+        "Assurance Issue Status": "resolved"
+    },         
+    
+        "ciscoDnaEventLink": "https://10.16.8.10/dna/assurance/issueDetails?issueId=670d9e42-b166-4359-8f1a-89dd1b1b9389", 
+        "note": "To programmatically get more info see here - https://<ip-address>/dna/platform/app/consumer-portal/developer-toolkit/apis?apiId=8684-39bb-4e89-a6e4", 
+        "tntId": "", 
+        "context": "Empty", 
+        "tenantId": ""
+        }

@@ -40,7 +40,16 @@
                             "text": "Placeholder",
                             "isSubtle": true,
                             "wrap": true,
-                            "size": "Medium"                        }
+                            "size": "Medium"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "spacing": "None",
+                            "text": "Placeholder",
+                            "isSubtle": true,
+                            "wrap": true,
+                            "size": "Medium"
+                        }
                     ],
                     "width": "stretch"
                 }

@@ -1,82 +1,128 @@
-# Proactive Messages
+# DNA-Microsoft-Teams-Assurance-Bot.py
 
-Bot Framework v4 proactive messages bot sample
+*This code is created for the Cisco DNA Center and Microsoft Teams platforms.*
+*The tutorial for this code will use Postman and Microsoft BotFramework Emulator for immediate functionality testing*
+---
 
-This bot has been created using [Bot Framework](https://dev.botframework.com), it shows how to send proactive messages to users by capturing a conversation reference, then using it later to initialize outbound messages.
+# Purpose
+**The purpose of this code is to leverage a Microsoft Teams bot to receive proactive DNA Center Assurance alerts**
+*NOTE: This code is for demonstration purposes only!*
+The tutorial for this code will allow you to validate the Microsoft Teams bot displays your Assurance data properly as [Adaptive Cards](https://adaptivecards.io/).
+Unfortunately, you cannot use the alwyas-on DNA Center appliance for testing, because you cannot modify API alerts. 
+*You will need access to your own DNA Center appliance if you want to test this with a DNA Center deployment.*
 
-## Concepts introduced in this sample
+# Intended Audience
+**This code is intended for network engineers who manage DNA Center and use Microsoft Teams for collaboration, and want to improve their alerting and monitoring on the Cisco SD-Access fabric.**
+Typically, DNA Center Assurance alerts are self-contained within the DNA Center GUI, which means you have to login to DNA Center and select the Assurance tab. This is not ideal.
+To work around this issue, and to be sure you receive alerts as they occur, you can use a proactive Microsoft Teams bot to alert you of Assurance events.
+If you deploy this bot into your Microsoft Teams enviornment, you can receive Assurance alerts on your mobile phone Teams app!
 
-Typically, each message that a bot sends to the user directly relates to the user's prior input. In some cases, a bot may need to send the user a message that is not directly related to the current topic of conversation. These types of messages are called proactive messages.
+# How This Code Works
+This code intends to accomplish the following tasks:
+1. Listen for DNA Center API POST messages on the URL https://localhost:3978/api/messages
+2. Convert the API messages into .json [Adaptive Cards](https://adaptivecards.io/).
+3. Display the Adaptive Cards in Microsoft BotFramework Emulator, including the following info:
+ - Assurance Issue Name
+ - Assurance Issue Details
+ - Assurance Issue Prioirty
+ - Assurance Issue Category
+ - Assurance Issue Status
+ - Device Name
 
-Proactive messages can be useful in a variety of scenarios. If a bot sets a timer or reminder, it will need to notify the user when the time arrives. Or, if a bot receives a notification from an external system, it may need to communicate that information to the user immediately. For example, if the user has previously asked the bot to monitor the price of a product, the bot can alert the user if the price of the product has dropped by 20%. Or, if a bot requires some time to compile a response to the user's question, it may inform the user of the delay and allow the conversation to continue in the meantime. When the bot finishes compiling the response to the question, it will share that information with the user.
+# Prerequesites
+1. Microsoft Windows OS (for the BotFramework Emulator)
+2. [Postman](https://www.postman.com/downloads/) installed
+3. [Microsoft BotFramework Emulator](https://github.com/microsoft/BotFramework-Emulator) installed
+4. [Python](https://www.python.org/downloads/) installed on your local machine.
+5. [pip](https://packaging.python.org/tutorials/installing-packages/) is installed for Python
 
-This project has a notify endpoint that will trigger the proactive messages to be sent to
-all users who have previously messaged the bot.
-
-## To try this sample
-
-- Clone the repository
-```bash
-git clone https://github.com/Microsoft/botbuilder-samples.git
+# Installation Steps
+**PowerShell**
+2. Clone this repository from a bash terminal:
+```console
+git clone https://github.com/james-sciortino/dna-teams-assurance-bot
 ```
-- In a terminal, navigate to `botbuilder-samples\samples\python\16.proactive-messages` folder
-- Activate your desired virtual environment
-- In the terminal, type `pip install -r requirements.txt`
-- Run your bot with `python app.py`
+2. Navigate into the directory:
+```console
+cd dna-teams-assurance-bot
+```
+3. Install the required dependencies specified in [requirements.txt](requirements.txt) from the <dna-get-interface-report> folder:
+```console
+pip3 install -r requirements.txt 
+```
+5. Run the code from your cloned git repository:
+```console
+python app.py
+```
+6. When you see the following output in your PowerShell terminal, the application is running successfully:
+```console
+======== Running on https://0.0.0.0:3978 ========
+(Press CTRL+C to quit)
+```
 
-## Testing the bot using Bot Framework Emulator
+# Tutorial
+1. Complete the installation steps listed above and be sure your bot is listening on TCP 3978
+```console
+======== Running on https://0.0.0.0:3978 ========
+(Press CTRL+C to quit)
+```
+2. Verify [Postman](https://www.postman.com/downloads/) and [Microsoft BotFramework Emulator](https://github.com/microsoft/BotFramework-Emulator) are installed and working on your Windows OS.
+3. Open Microsoft BotFramework Emulator, select **File > Open Bot** and enter the following URL:
+```console
+https://localhost:3978/api/messages
+```
+4. Open Postman. Create a POST request with the following information:
+ - HTTP Request: POST
+ - HTTP URI: https://localhost:3978/api/assurance
+ - Content-Type: application/json
+ - Body: Select **raw** type and copy-paste the .json data from the example.json file included in this repository.
+5. Send the API call to your bot.
+6. View the alert in the Microsoft BotFramework Emulator:
 
-[Bot Framework Emulator](https://github.com/microsoft/botframework-emulator) is a desktop application that allows bot developers to test and debug their bots on localhost or running remotely through a tunnel.
+# Additional Tutorials
+Want to see how a Priority 2 or Priority 3 Assurance event will be displayed?
+Or, want to see what happens when an Assurance event is resolved?
+Modify the key-value for Assurance Issue Status in your .json data (in the body of your Postman POST request):
 
-- Install the latest Bot Framework Emulator from [here](https://github.com/Microsoft/BotFramework-Emulator/releases)
+**Active Priority 2 Assurance will display a yellow theme**
+Want to see what happens when an Assurance event is a Priority 2 or Priority 3?
+Modify the key-value for *Assurance Issue Priority*  to *P2* in your .json data (in the body of your Postman POST request):
+```console
+    {
+        "Type": "Network Device", 
+        "Assurance Issue Details":"AP AP-Test-3 went down", 
+        "Assurance Issue Priority": "P2", 
+        "Device": "AP-Test-3", 
+        "Assurance Issue Name": "AP AP-Test-3 went down", 
+        "Assurance Issue Category": "availability", 
+        "Assurance Issue Status": "active"
+    },             
+```
 
-### Connect to the bot using Bot Framework Emulator
+**Resolved Priority 2 Assurance events will display in green theme**
+Want to see what happens when an Assurance event is resolved?
+Modify the key-value for *Assurance Issue Status* to *active* in your .json data (in the body of your Postman POST request):
+# Tutorial for Active Priority 2 Assurance Event
+```console
+    {
+        "Type": "Network Device", 
+        "Assurance Issue Details":"AP AP-Test-3 went down", 
+        "Assurance Issue Priority": "P2", 
+        "Device": "AP-Test-3", 
+        "Assurance Issue Name": "AP AP-Test-3 went down", 
+        "Assurance Issue Category": "availability", 
+        "Assurance Issue Status": "resolved"
+    },             
+```
 
-- Launch Bot Framework Emulator
-- File -> Open Bot
-- Enter a Bot URL of `http://localhost:3978/api/messages`
+# FAQ 
+1. What is the purpose of each file?
+    - [app.py](app.py) -  Primary code. This is the file you execute to run this code. 
 
-With the Bot Framework Emulator connected to your running bot, the sample will not respond to an HTTP GET that will trigger a proactive message.  The proactive message can be triggered from the command line using `curl` or similar tooling, or can be triggered by opening a browser windows and navigating to `http://localhost:3978/api/notify`.
 
-### Using curl
+# Authors
+Please contact me with questions or comments.
+- James Sciortino - james.sciortino@outlook.com
 
-- Send a get request to `http://localhost:3978/api/notify` to proactively message users from the bot.
-
-   ```bash
-    curl get http://localhost:3978/api/notify
-   ```
-
-- Using the Bot Framework Emulator, notice a message was proactively sent to the user from the bot.
-
-### Using the Browser
-
-- Launch a web browser
-- Navigate to `http://localhost:3978/api/notify`
-- Using the Bot Framework Emulator, notice a message was proactively sent to the user from the bot.
-
-## Interacting with the bot
-
-In addition to responding to incoming messages, bots are frequently called on to send "proactive" messages based on activity, scheduled tasks, or external events.
-
-In order to send a proactive message using Bot Framework, the bot must first capture a conversation reference from an incoming message using `TurnContext.getConversationReference()`. This reference can be stored for later use.
-
-To send proactive messages, acquire a conversation reference, then use `adapter.continueConversation()` to create a TurnContext object that will allow the bot to deliver the new outgoing message.
-
-## Deploy this bot to Azure
-
-To learn more about deploying a bot to Azure, see [Deploy your bot to Azure](https://aka.ms/azuredeployment) for a complete list of deployment instructions.
-
-## Further reading
-
-- [Bot Framework Documentation](https://docs.botframework.com)
-- [Bot Basics](https://docs.microsoft.com/azure/bot-service/bot-builder-basics?view=azure-bot-service-4.0)
-- [Send proactive messages](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-proactive-message?view=azure-bot-service-4.0&tabs=js)
-- [continueConversation Method](https://docs.microsoft.com/en-us/javascript/api/botbuilder/botframeworkadapter#continueconversation)
-- [getConversationReference Method](https://docs.microsoft.com/en-us/javascript/api/botbuilder-core/turncontext#getconversationreference)
-- [Activity processing](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-activity-processing?view=azure-bot-service-4.0)
-- [Azure Bot Service Introduction](https://docs.microsoft.com/azure/bot-service/bot-service-overview-introduction?view=azure-bot-service-4.0)
-- [Azure Bot Service Documentation](https://docs.microsoft.com/azure/bot-service/?view=azure-bot-service-4.0)
-- [Azure CLI](https://docs.microsoft.com/cli/azure/?view=azure-cli-latest)
-- [Azure Portal](https://portal.azure.com)
-- [Language Understanding using LUIS](https://docs.microsoft.com/en-us/azure/cognitive-services/luis/)
-- [Channels and Bot Connector Service](https://docs.microsoft.com/en-us/azure/bot-service/bot-concepts?view=azure-bot-service-4.0)
+# License
+This project is licensed under the terms of the MIT License.

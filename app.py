@@ -113,6 +113,7 @@ def _create_adaptive_card_attachment(event, index) -> Attachment:
     card_data["body"][0]["text"] = event["details"]["Assurance Issue Name"]
     card_data["body"][1]["columns"][1]["items"][0]["text"] = (event["details"]["Assurance Issue Priority"] + " Event")
     card_data["body"][1]["columns"][1]["items"][1]["text"] = str(event_time)
+    card_data["body"][1]["columns"][1]["items"][2]["text"] = ("Status is " + event["details"]["Assurance Issue Status"])
     card_data["body"][2]["facts"][0]["value"] = event["details"]["Assurance Issue Details"]
     card_data["body"][2]["facts"][1]["value"] = event["details"]["Device"]
     card_data["body"][2]["facts"][2]["value"] = event["details"]["Assurance Issue Category"]
