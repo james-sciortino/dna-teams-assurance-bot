@@ -60,7 +60,10 @@ async def on_error(context: TurnContext, error: Exception):
         )
         # Send a trace activity, which will be displayed in Bot Framework Emulator
         await context.send_activity(trace_activity)
-CARDS = [os.getcwd() + "/1-template.json"]
+LOCATION = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+CARD = os.path.join(LOCATION, "resources/template.json")
 
 ADAPTER.on_turn_error = on_error
 
@@ -93,7 +96,7 @@ async def messages(req: Request) -> Response:
     return Response(status=HTTPStatus.OK)
 
 def _create_adaptive_card_attachment(event, index) -> Attachment:
-    card_path = os.path.join(os.getcwd(), CARDS[index])
+    card_path = os.path.join(os.getcwd(), CARD)
     with open(card_path, "rb") as in_file:
         card_data = json.load(in_file)
         realtime = datetime.fromtimestamp(int(event["timestamp"])/1000)
@@ -102,13 +105,13 @@ def _create_adaptive_card_attachment(event, index) -> Attachment:
     if event["details"]["Assurance Issue Status"] == "active":
         if event["details"]["Assurance Issue Priority"] == "P1":
             card_data["body"][1]["columns"][1]["items"][0]["color"] = "attention"
-            card_data["body"][1]["columns"][0]["items"][0]["url"] = "https://sciortino.blob.core.windows.net/automation-stuff/warn.png"
+            card_data["body"][1]["columns"][0]["items"][0]["url"] = os.path.join(LOCATION, 'images/attention.png')
         elif event["details"]["Assurance Issue Priority"] == "P2":
                 card_data["body"][1]["columns"][1]["items"][0]["color"] = "warning"
-                card_data["body"][1]["columns"][0]["items"][0]["url"] = "https://sciortino.blob.core.windows.net/automation-stuff/caution.png"
+                card_data["body"][1]["columns"][0]["items"][0]["url"] = os.path.join(LOCATION, 'images/warning.png')
         else:
             card_data["body"][1]["columns"][1]["items"][0]["color"] = "good"
-            card_data["body"][1]["columns"][0]["items"][0]["url"] = "https://sciortino.blob.core.windows.net/automation-stuff/good.png"
+            card_data["body"][1]["columns"][0]["items"][0]["url"] = os.path.join(LOCATION, 'images/good.png')
 
     card_data["body"][0]["text"] = event["details"]["Assurance Issue Name"]
     card_data["body"][1]["columns"][1]["items"][0]["text"] = (event["details"]["Assurance Issue Priority"] + " Event")
@@ -118,7 +121,8 @@ def _create_adaptive_card_attachment(event, index) -> Attachment:
     card_data["body"][2]["facts"][1]["value"] = event["details"]["Device"]
     card_data["body"][2]["facts"][2]["value"] = event["details"]["Assurance Issue Category"]
     card_data["body"][2]["facts"][3]["value"] = event["details"]["Assurance Issue Status"]
-    card_data["actions"][0]["url"] = event["ciscoDnaEventLink"]
+    card_data["actions"][0]["url"] = event["ciscoDnaEventLink"]    
+    card_data["backgroundImage"]["url"] = "https://sciortino.blob.core.windows.net/automation-stuff/dna-transparent.png"
 
     return CardFactory.adaptive_card(card_data)
 
@@ -164,7 +168,7 @@ APP.router.add_post("/api/assurance", assurance)
 
 if __name__ == "__main__":
     sslcontext = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
-    sslcontext.load_cert_chain(os.getcwd() + "/server.crt", os.getcwd() + "/server.key")
+    sslcontext.load_cert_chain(os.path.join(LOCATION, "resources/server.crt"), os.path.join(LOCATION, "resources/server.key"))
     try:
         web.run_app(APP, host="0.0.0.0", port=CONFIG.PORT, ssl_context=sslcontext)
     except Exception as error:
