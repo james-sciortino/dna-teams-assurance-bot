@@ -74,11 +74,11 @@ https://localhost:3978/api/messages
 
 ![Botframework Setup](images/BotFramework.gif "Botframework Setup")
 
-4. Open Postman. Send a POST request with the following information:
- - HTTP Request: POST
- - HTTP URI: https://localhost:3978/api/assurance
- - Content-Type: application/json
- - Body: Select **raw** type and copy-paste the .json data from the [example.json](resources/example.json) file included in this repository.
+4. Open Postman and send an HTTP POST request with the following information:
+ - HTTP Request: **POST**
+ - HTTP URI: **https://localhost:3978/api/assurance**
+ - Content-Type**: application/json
+ - Body: Select **Selct *raw*, then copy-paste the .json data from the [example.json](resources/example.json) file included in this repository!**
 
 ![Postman Setup](images/Postman.gif "Postman Setup")
 
@@ -88,13 +88,15 @@ https://localhost:3978/api/messages
 
 
 # Additional Tutorials
-Want to see how a Priority 2 or Priority 3 Assurance event will be displayed?
-Or, want to see what happens when an Assurance event is resolved?
-Modify the key-value for Assurance Issue Status in your .json data (in the body of your Postman POST request):
+This code includes logic to display different colors for different types of alerts.
+Active P1 Alerts = Red
+Active P2 Alerts = Orange
+Active P3 Alerts = Green
+Resolved Alerts = Green
 
-**Active Priority 2 Assurance will display a yellow theme**
-Want to see what happens when an Assurance event is a Priority 2 or Priority 3?
-Modify the key-value for *Assurance Issue Priority*  to *P2* in your .json data (in the body of your Postman POST request):
+**Active P2 Assurance Alerts will display an Orange theme**
+Want to see what happens when an Assurance event is a Priority 2 (or,Priority 3)?
+Modify the key-value for **"Assurance Issue Status"** to a **"P2"** in your [example.json](resources/example.json) data (the payload of your POST request).
 ```console
     {
         "Type": "Network Device", 
@@ -108,10 +110,9 @@ Modify the key-value for *Assurance Issue Priority*  to *P2* in your .json data 
 ```
 ![Assurance P2](images/Assurance-P2.gif "Assurance P2")
 
-**Resolved Priority 2 Assurance events will display in green theme**
+**Resolved Assurance events (any priority) will display in green theme**
 Want to see what happens when an Assurance event is resolved?
-Modify the key-value for *Assurance Issue Status* to *active* in your .json data (in the body of your Postman POST request):
-# Tutorial for Active Priority 2 Assurance Event
+Modify the key-value for **"Assurance Issue Status"** to **"resolved"** in your [example.json](resources/example.json) data (the payload of your POST request).
 ```console
     {
         "Type": "Network Device", 
@@ -123,6 +124,7 @@ Modify the key-value for *Assurance Issue Status* to *active* in your .json data
         "Assurance Issue Status": "resolved"
     },             
 ```
+
 ![Assurance Resolved](images/Assurance-Resolved.gif "Assurance Resolved")
 # FAQ 
 1. What is the purpose of each file?
