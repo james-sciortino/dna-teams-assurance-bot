@@ -71,17 +71,17 @@ python app.py
 ```console
 https://localhost:3978/api/messages
 ```
-[Botframework Setup](images/BotFramework.gif "Botframework Setup")
+![Botframework Setup](images/BotFramework.gif "Botframework Setup")
 
 4. Open Postman. Send a POST request with the following information:
  - HTTP Request: POST
  - HTTP URI: https://localhost:3978/api/assurance
  - Content-Type: application/json
  - Body: Select **raw** type and copy-paste the .json data from the example.json file included in this repository.
-[Postman Setup](images/Postman.gif "Postman Setup")
+![Postman Setup](images/Postman.gif "Postman Setup")
 
 5. View the P1 Assurance alert in the Microsoft BotFramework Emulator:
-[Assurance P1](images/Assurance-P1.gif "Assurance P1")
+![Assurance P1](images/Assurance-P1.gif "Assurance P1")
 
 
 # Additional Tutorials
@@ -103,7 +103,7 @@ Modify the key-value for *Assurance Issue Priority*  to *P2* in your .json data 
         "Assurance Issue Status": "active"
     },             
 ```
-[Assurance P2](images/Assurance-P1.gif "Assurance P2")
+![Assurance P2](images/Assurance-P1.gif "Assurance P2")
 
 **Resolved Priority 2 Assurance events will display in green theme**
 Want to see what happens when an Assurance event is resolved?
@@ -120,7 +120,7 @@ Modify the key-value for *Assurance Issue Status* to *active* in your .json data
         "Assurance Issue Status": "resolved"
     },             
 ```
-[Assurance Resolved](images/Assurance-Resolved.gif "Assurance Resolved")
+![Assurance Resolved](images/Assurance-Resolved.gif "Assurance Resolved")
 # FAQ 
 1. What is the purpose of each file?
     - [app.py](app.py) -  Primary code. This is the file you execute to run this code. 
