@@ -103,7 +103,7 @@ Modify the key-value for *Assurance Issue Priority*  to *P2* in your .json data 
         "Assurance Issue Status": "active"
     },             
 ```
-![Assurance P2](images/Assurance-P1.gif "Assurance P2")
+![Assurance P2](images/Assurance-P2.gif "Assurance P2")
 
 **Resolved Priority 2 Assurance events will display in green theme**
 Want to see what happens when an Assurance event is resolved?
