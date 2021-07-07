@@ -87,7 +87,7 @@
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "version": "1.3",
     "backgroundImage": {
-        "url": "",
+        "url": "https://sciortino.blob.core.windows.net/automation-stuff/dna-transparent.png",
         "horizontalAlignment": "Center",
         "verticalAlignment": "Center"
         

@@ -2,7 +2,6 @@
 
 *This code is created for Cisco DNA Center and Microsoft Teams.*
 
-*The included tutorial(s) will use Postman and Microsoft BotFramework Emulator; no DNA Center appliance needed!*
 ---
 
 ## Purpose
@@ -30,12 +29,12 @@ This code intends to accomplish the following tasks:
 1. Listen for DNA Center's Event API POST requests on the URL https://localhost:3978/api/assurance
 2. Populate the POST data into an [Adaptive Card](https://adaptivecards.io/) consisting of .json data.
 3. Display the Adaptive Card(s) in Microsoft BotFramework Emulator, including the following info:
-    - Assurance Issue Name
-    - Assurance Issue Details
-    - Assurance Issue Prioirty
-    - Assurance Issue Category
-    - Assurance Issue Status
-    - Device Name
+* Assurance Issue Name
+* Assurance Issue Details
+* Assurance Issue Prioirty
+* Assurance Issue Category
+* Assurance Issue Status
+* Device Name
 
 ## Prerequisites
 1. Microsoft Windows OS (for the BotFramework Emulator)
@@ -46,17 +45,21 @@ This code intends to accomplish the following tasks:
 
 ## Installation Steps
 1. Clone this repository from a **PowerShell** terminal:
-`git clone https://github.com/james-sciortino/dna-teams-assurance-bot`
-
+```console
+git clone https://github.com/james-sciortino/dna-teams-assurance-bot`
+```
 2. Navigate into the directory:
-`cd dna-teams-assurance-bot`
-
+```console
+cd dna-teams-assurance-bot`
+```
 3. Install the required dependencies specified in [requirements.txt](requirements.txt) from the <dna-get-interface-report> folder:
-`pip3 install -r requirements.txt`
-
+```console
+pip3 install -r requirements.txt`
+```
 5. Run the code from your cloned git repository:
-`python app.py`
-
+```console
+python app.py
+```
 6. When you see the following output in your PowerShell terminal, the application is running successfully:
 ```console
 ======== Running on https://0.0.0.0:3978 ========
@@ -73,10 +76,10 @@ https://localhost:3978/api/messages
 ![Botframework Setup](images/BotFramework.gif "Botframework Setup")
 
 4. Open Postman and send an HTTP POST request with the following information:
-    - HTTP Request: **POST**
-    - HTTP URI: **https://localhost:3978/api/assurance**
-    - Content-Type: **application/json**
-    - Body: Select **Selct *raw*, then copy-paste the .json data from the [example.json](resources/example.json) file included in this repository!**
+* HTTP Request: **POST**
+* HTTP URI: **https://localhost:3978/api/assurance**
+* Content-Type: **application/json**
+* Body: Select **Selct *raw*, then copy-paste the .json data from the [example.json](resources/example.json) file included in this repository!**
 ![Postman Setup](images/Postman.gif "Postman Setup")
 
 5. View the P1 Assurance alert in the Microsoft BotFramework Emulator:
@@ -137,7 +140,12 @@ Follow Microsoft's [guide](https://docs.microsoft.com/en-us/microsoftteams/platf
 
 ### FAQ 
 1. What is the purpose of each file?
-    - [app.py](app.py) -  Primary code. This is the file you execute to run this code. 
+    - [app.py](app.py) -  Primary code. This is the file you execute to run this code.
+2. Why is there a certificate in the resources[resources](resources/) folder?
+    - DNA Center requires HTTPS for its Event API. HTTP is not supported.
+3. Why are there *None* values in the [example.json](resources/example.json)
+    - This is a real-world example of the DNA Center Event API. Although *None* is not valid .json, it is included anyway. To mitigate this
+ 
 
 ### Authors
 Please contact me with questions or comments.

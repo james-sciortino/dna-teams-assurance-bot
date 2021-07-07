@@ -122,7 +122,6 @@ def _create_adaptive_card_attachment(event, index) -> Attachment:
     card_data["body"][2]["facts"][2]["value"] = event["details"]["Assurance Issue Category"]
     card_data["body"][2]["facts"][3]["value"] = event["details"]["Assurance Issue Status"]
     card_data["actions"][0]["url"] = event["ciscoDnaEventLink"]    
-    card_data["backgroundImage"]["url"] = "https://sciortino.blob.core.windows.net/automation-stuff/dna-transparent.png"
 
     return CardFactory.adaptive_card(card_data)
 
@@ -132,7 +131,7 @@ async def assurance(req: Request) -> Response:
         test = await req.text()
         r = test.replace("None",'"Empty"')
         body = json.loads(r)
-        print(body)
+        print(Response(status=HTTPStatus.OK))
         
     else:
         return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
