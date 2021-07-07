@@ -87,16 +87,16 @@ https://localhost:3978/api/messages
 ![Assurance P1](images/Assurance-P1.gif "Assurance P1")
 
 # Additional Tutorials
-This code includes logic to display different colors for different types of alerts:
-    - Active P1 Alerts
+This code includes logic to display color-coded alerts:
+    - Active P1 Alerts = Red
     - Active P2 Alerts = Orange
     - Active P3 Alerts = Green
     - Resolved Alerts = Green
 
 **Active P2 Assurance Alerts will display with an Orange theme!**
 
-Want to see what happens when an Assurance event is a Priority 2 (or,Priority 3)?
-Modify the key-value for **"Assurance Issue Status"** to a **"P2"** in your [example.json](resources/example.json) data (the payload of your POST request).
+This code included color-coded alerts. 
+    - Modify the key-value for **"Assurance Issue Status"** to a **"P2"** in your [example.json](resources/example.json) data (the payload of your POST request).
 ```console
     {
         "Type": "Network Device", 
