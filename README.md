@@ -30,12 +30,12 @@ This code intends to accomplish the following tasks:
 1. Listen for DNA Center's Event API POST requests on the URL https://localhost:3978/api/assurance
 2. Populate the POST data into an [Adaptive Card](https://adaptivecards.io/) consisting of .json data.
 3. Display the Adaptive Card(s) in Microsoft BotFramework Emulator, including the following info:
-            - Assurance Issue Name
-            - Assurance Issue Details
-            - Assurance Issue Prioirty
-            - Assurance Issue Category
-            - Assurance Issue Status
-            - Device Name
+    - Assurance Issue Name
+    - Assurance Issue Details
+    - Assurance Issue Prioirty
+    - Assurance Issue Category
+    - Assurance Issue Status
+    - Device Name
 
 # Prerequisites
 1. Microsoft Windows OS (for the BotFramework Emulator)
@@ -77,10 +77,10 @@ https://localhost:3978/api/messages
 ![Botframework Setup](images/BotFramework.gif "Botframework Setup")
 
 4. Open Postman and send an HTTP POST request with the following information:
-            - HTTP Request: **POST**
-            - HTTP URI: **https://localhost:3978/api/assurance**
-            - Content-Type: **application/json**
-            - Body: Select **Selct *raw*, then copy-paste the .json data from the [example.json](resources/example.json) file included in this repository!**
+    - HTTP Request: **POST**
+    - HTTP URI: **https://localhost:3978/api/assurance**
+    - Content-Type: **application/json**
+    - Body: Select **Selct *raw*, then copy-paste the .json data from the [example.json](resources/example.json) file included in this repository!**
 ![Postman Setup](images/Postman.gif "Postman Setup")
 
 5. View the P1 Assurance alert in the Microsoft BotFramework Emulator:
@@ -88,10 +88,10 @@ https://localhost:3978/api/messages
 
 # Additional Tutorials
 This code includes logic to display different colors for different types of alerts:
-            - Active P1 Alerts
-            - Active P2 Alerts = Orange
-            - Active P3 Alerts = Green
-            - Resolved Alerts = Green
+    - Active P1 Alerts
+    - Active P2 Alerts = Orange
+    - Active P3 Alerts = Green
+    - Resolved Alerts = Green
 
 **Active P2 Assurance Alerts will display with an Orange theme!**
 
