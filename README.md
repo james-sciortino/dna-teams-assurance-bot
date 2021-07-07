@@ -88,7 +88,7 @@ https://localhost:3978/api/messages
 
 # Additional Tutorials
 This code includes logic to display color-coded alerts:
-1. Active P1 Alerts = Red
+    - Active P1 Alerts = Red
 2. Active P2 Alerts = Orange
 3. Active P3 Alerts = Green
 4. Resolved Alerts = Green
