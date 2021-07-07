@@ -75,18 +75,20 @@ python app.py
 https://localhost:3978/api/messages
 ```
 ![Botframework Setup](images/BotFramework.gif "Botframework Setup")
+
 4. Open Postman and send an HTTP POST request with the following information:
             - HTTP Request: **POST**
             - HTTP URI: **https://localhost:3978/api/assurance**
             - Content-Type: **application/json**
             - Body: Select **Selct *raw*, then copy-paste the .json data from the [example.json](resources/example.json) file included in this repository!**
 ![Postman Setup](images/Postman.gif "Postman Setup")
+
 5. View the P1 Assurance alert in the Microsoft BotFramework Emulator:
 ![Assurance P1](images/Assurance-P1.gif "Assurance P1")
 
 # Additional Tutorials
-This code includes logic to display different colors for different types of alerts.
-            - Active P1 Alerts = Red
+This code includes logic to display different colors for different types of alerts:
+            - Active P1 Alerts
             - Active P2 Alerts = Orange
             - Active P3 Alerts = Green
             - Resolved Alerts = Green
