@@ -46,21 +46,17 @@ This code intends to accomplish the following tasks:
 
 ## Installation Steps
 1. Clone this repository from a **PowerShell** terminal:
-```console
-git clone https://github.com/james-sciortino/dna-teams-assurance-bot
-```
+`git clone https://github.com/james-sciortino/dna-teams-assurance-bot`
+
 2. Navigate into the directory:
-```console
-cd dna-teams-assurance-bot
-```
+`cd dna-teams-assurance-bot`
+
 3. Install the required dependencies specified in [requirements.txt](requirements.txt) from the <dna-get-interface-report> folder:
-```console
-pip3 install -r requirements.txt 
-```
+`pip3 install -r requirements.txt`
+
 5. Run the code from your cloned git repository:
-```console
-python app.py
-```
+`python app.py`
+
 6. When you see the following output in your PowerShell terminal, the application is running successfully:
 ```console
 ======== Running on https://0.0.0.0:3978 ========
@@ -88,10 +84,10 @@ https://localhost:3978/api/messages
 
 ### Additional Info
 This code includes conditional logic to display color-coded alerts:
-1. Active P1 Alerts = Red
-2. Active P2 Alerts = Orange
-3. Active P3 Alerts = Green
-4. Resolved Alerts = Green
+* Active P1 Alerts = Red
+* Active P2 Alerts = Orange
+* Active P3 Alerts = Green
+* Resolved Alerts = Green
 
 **Active P2 Assurance Alerts will display with an Orange theme!**
 
