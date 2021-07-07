@@ -5,7 +5,7 @@
 *The included tutorial(s) will use Postman and Microsoft BotFramework Emulator; no DNA Center appliance needed!*
 ---
 
-# Purpose
+## Purpose
 **The purpose of this code is to leverage a Microsoft Teams bot to receive proactive DNA Center Assurance alerts**
 
 The tutorial for this code will allow you to validate that your Microsoft Teams bot displays your Assurance data properly as [Adaptive Cards](https://adaptivecards.io/).
@@ -16,7 +16,7 @@ Even better, you can try testing this with an actual DNA Center appliance.
 
 If you do not have access to the Cisco DevNet sandbox environment or a physical DNA Center deployment, the tutorials provided below will allow you to test this bot with actual .json data from DNA Center Assurance events(using Postman).
 
-# Intended Audience
+### Intended Audience
 **This code is intended for network engineers who manage DNA Center and use Microsoft Teams for collaboration, and want to improve their alerting and monitoring on the Cisco SD-Access fabric.**
 
 Typically, DNA Center Assurance alerts are self-contained within the DNA Center GUI, which means you have to login to DNA Center and select the Assurance tab. This is not ideal and can prevent you from being notified from critial P1 alerts in your SD-Access topology.
@@ -25,7 +25,7 @@ This code intends to solve this issue by integrating DNA Center's Event API with
 
 Even better, your entire team can be alerted to Assurance events on their mobile phone or laptop using the Microsoft Teams app! Never miss a critial infrastructure alert ever again!
 
-# How This Code Works
+## How This Code Works
 This code intends to accomplish the following tasks:
 1. Listen for DNA Center's Event API POST requests on the URL https://localhost:3978/api/assurance
 2. Populate the POST data into an [Adaptive Card](https://adaptivecards.io/) consisting of .json data.
@@ -37,14 +37,14 @@ This code intends to accomplish the following tasks:
     - Assurance Issue Status
     - Device Name
 
-# Prerequisites
+## Prerequisites
 1. Microsoft Windows OS (for the BotFramework Emulator)
 2. [Postman](https://www.postman.com/downloads/) installed
 3. [Microsoft BotFramework Emulator](https://github.com/microsoft/BotFramework-Emulator) installed
 4. [Python](https://www.python.org/downloads/) installed on your local machine.
 5. [pip](https://packaging.python.org/tutorials/installing-packages/) installed for Python
 
-# Installation Steps
+## Installation Steps
 1. Clone this repository from a **PowerShell** terminal:
 ```console
 git clone https://github.com/james-sciortino/dna-teams-assurance-bot
@@ -67,7 +67,7 @@ python app.py
 (Press CTRL+C to quit)
 ```
 
-# Tutorial
+## Tutorial
 1. Complete the installation steps listed above and be sure your bot is listening on TCP 3978
 2. Verify [Postman](https://www.postman.com/downloads/) and [Microsoft BotFramework Emulator](https://github.com/microsoft/BotFramework-Emulator) are installed and working on your Windows OS.
 3. Open Microsoft BotFramework Emulator, select **File > Open Bot** and enter the following URL:
@@ -86,17 +86,16 @@ https://localhost:3978/api/messages
 5. View the P1 Assurance alert in the Microsoft BotFramework Emulator:
 ![Assurance P1](images/Assurance-P1.gif "Assurance P1")
 
-# Additional Tutorials
-This code includes logic to display color-coded alerts:
-    - Active P1 Alerts = Red
+### Additional Info
+This code includes conditional logic to display color-coded alerts:
+1. Active P1 Alerts = Red
 2. Active P2 Alerts = Orange
 3. Active P3 Alerts = Green
 4. Resolved Alerts = Green
 
 **Active P2 Assurance Alerts will display with an Orange theme!**
 
-This code included color-coded alerts. 
-    - Modify the key-value for **"Assurance Issue Status"** to a **"P2"** in your [example.json](resources/example.json) data (the payload of your POST request).
+Modify the key-value for **"Assurance Issue Status"** to a **"P2"** in your [example.json](resources/example.json) data (the payload of your POST request).
 ```console
     {
         "Type": "Network Device", 
@@ -108,11 +107,10 @@ This code included color-coded alerts.
         "Assurance Issue Status": "active"
     },             
 ```
+When this payload is sent to your Microsoft Teams bot...
 ![Assurance P2](images/Assurance-P2.gif "Assurance P2")
 
 **Resolved Assurance events (of any priority) will display with a green theme!**
-
-Want to see what happens when an Assurance event is resolved?
 
 Modify the key-value for **"Assurance Issue Status"** to **"resolved"** in your [example.json](resources/example.json) data (the payload of your POST request).
 ```console
@@ -126,14 +124,26 @@ Modify the key-value for **"Assurance Issue Status"** to **"resolved"** in your 
         "Assurance Issue Status": "resolved"
     },             
 ```
-
+When this payload is sent to your Microsoft Teams bot...
 ![Assurance Resolved](images/Assurance-Resolved.gif "Assurance Resolved")
-# FAQ 
+
+### Configuring DNA Center
+If you have access to a DNA Center appliance, perform the following steps to configure the Event API for Assurance alerts:
+
+1. Login to the DNA Center GUI
+2. Navigate to the ______ tab.
+3. Select one or more events.
+4. Select
+5. 
+
+### Ready for Deployment
+Follow Microsoft's [guide](https://docs.microsoft.com/en-us/microsoftteams/platform/get-started/first-app-bot?tabs=vscode) to deploy your bot to Microsoft Teams!
+
+### FAQ 
 1. What is the purpose of each file?
     - [app.py](app.py) -  Primary code. This is the file you execute to run this code. 
 
-
-# Authors
+### Authors
 Please contact me with questions or comments.
 - James Sciortino - james.sciortino@outlook.com
 
